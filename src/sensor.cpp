@@ -62,19 +62,19 @@ void Sensor::printHumidity(){
 }
 
 float Sensor::getTemperatur(){
-    return iaqSensor.temperature;
+    return round(iaqSensor.temperature * 100) / 100.;
 }
 
 float Sensor::getPressure(){
-    return iaqSensor.pressure;
+    return round(iaqSensor.pressure) / 100.;
 }
 
 float Sensor::getHumidity(){
-    return iaqSensor.humidity;
+    return round(iaqSensor.humidity * 100) / 100.;
 }
 
 float Sensor::getCO2Level(){
-    return iaqSensor.co2Equivalent;
+    return round(iaqSensor.co2Equivalent * 100) / 100.;
 }
 
 void Sensor::checkIaqSensorStatus(){

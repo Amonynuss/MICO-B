@@ -5,7 +5,7 @@
 #include <lcd.h>
 #include "startup.h"
 
-#define RECEIVER
+#define TRANSMITTER
 
 Startup startup;
 Ampel ampel;
@@ -64,10 +64,7 @@ void loop() {
   // The following loop code is for the transmitter
   sensor.loop();
   mqtt.sendMessage("transmitter", sensor.getDataAsJson());
-
   sensor.loop();
-
-  mqtt.sendMessage("transmitter", String(sensor.getCO2Level()));
   delay(1000);
   #endif
 
