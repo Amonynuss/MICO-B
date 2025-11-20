@@ -1,2 +1,2 @@
-#define SECRET_SSID "Emils iPhone"
-#define SECRET_PASS "evastinkt"
+#define SECRET_SSID "big-data"
+#define SECRET_PASS "Big-Data"
