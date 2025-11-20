@@ -32,6 +32,14 @@ void setup() {
 }
 
 void loop() {
+  #ifdef TRANSMITTER
+  // The following code is for the transmitter
   sensor.loop();
-  mqtt.loop();
+  mqttSender.loop();
+  #endif
+
+
+  #ifdef RECEIVER
+  // The following code is for the receiver
+  #endif
 }

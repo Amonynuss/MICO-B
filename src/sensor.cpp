@@ -41,8 +41,6 @@ void Sensor::loop(){
             this->printHumidity();
             this->printPressure();
             this->printTemperature();
-            this->printRawHumidity();
-            this->printRawTemperature();
         }
     }
 }
