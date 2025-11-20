@@ -12,14 +12,6 @@ Mqtt::Mqtt() : mqttClient(wifiClient)
 
 void Mqtt::initialize()
 {
-  if (!Serial)
-  {
-    Serial.begin(9600);
-    long start = millis();
-    while (!Serial && (millis() - start < 3000))
-      ;
-  }
-
   connectWifi();
   connectMqtt();
   mqttClient.onMessage(handleMessage);

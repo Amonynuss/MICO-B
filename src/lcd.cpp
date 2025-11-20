@@ -4,12 +4,6 @@ Lcd::Lcd() : tft(TFT_CS, TFT_DC, TFT_RST) {}
 
 void Lcd::initialize(void)
 {
-  if (!Serial) {
-    Serial.begin(9600);
-    long start = millis();
-    while (!Serial && (millis() - start < 3000)); 
-  }
-
   Serial.println(F("Initialize LCD..."));
 
   tft.initR(INITR_144GREENTAB);
