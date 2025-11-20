@@ -3,7 +3,8 @@
 
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
-#include "arduino_secrets.h"
+#include "credentials.h"
+#include "config.h"
 
 class Mqtt {
 
@@ -11,9 +12,9 @@ class Mqtt {
         WiFiClient wifiClient;
         MqttClient mqttClient;
 
-        const char* broker = "192.168.37.4";
-        int port = 1883;
-        const char* baseTopic  = "micob/ampel/";
+        const char* broker = MQTT_SERVER_IP;
+        int port = MQTT_PORT;
+        const char* baseTopic  = MQTT_BASE_TOPIC;
 
         const unsigned long interval = 1000;
         unsigned long previousMillis = 0;
