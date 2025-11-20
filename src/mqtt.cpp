@@ -53,9 +53,9 @@ void Mqtt::sendMessage(String topic, String message)
   mqttClient.endMessage();
 }
 
-void Mqtt::registerCallback(String topic, void (*callback)(String))
+void Mqtt::registerCallback(String topic, std::function<void(String)> callback)
 {
-  this->callback = callback;
+  this->callback = std::move(callback);
   mqttClient.subscribe(baseTopic + topic);
 }
 
@@ -109,5 +109,8 @@ void Mqtt::onMessage(int messageSize)
   Serial.println(message);
   Serial.println();
 
-  callback(message);
+  if (callback)
+  {
+    callback(message);
+  }
 }

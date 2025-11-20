@@ -28,16 +28,16 @@ class Lcd {
         };
 
         void setHeadline(const char* text, uint16_t color, int position);
-        void setData(float data, uint16_t color, int position);
+        void setData(String data, uint16_t color, int position);
 
     public:
         Lcd();
         void begin();
 
-        void setCo2Level(float level);
-        void setTemperature(float temperature);
-        void setHumidity(float humidity);
-        void setPressure(float pressure);
+        void setCo2Level(String level);
+        void setTemperature(String temperature);
+        void setHumidity(String humidity);
+        void setPressure(String pressure);
 };
 
 #endif

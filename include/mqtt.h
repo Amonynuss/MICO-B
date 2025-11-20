@@ -5,6 +5,7 @@
 #include <WiFiNINA.h>
 #include "credentials.h"
 #include "config.h"
+#include <functional>
 
 class Mqtt {
 
@@ -23,7 +24,7 @@ class Mqtt {
         static void handleMessage(int messageSize); 
         void onMessage(int messageSize);
 
-        void (*callback)(String);
+        std::function<void(String)> callback;
 
     public:
         Mqtt();
@@ -31,7 +32,7 @@ class Mqtt {
         void loop();
 
         void sendMessage(String topic, String message);
-        void registerCallback(String topic, void (*callback)(String));
+        void registerCallback(String topic, std::function<void(String)> callback);
 };
 
 #endif
