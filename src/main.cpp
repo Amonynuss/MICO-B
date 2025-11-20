@@ -13,7 +13,12 @@ Sensor sensor;
 Mqtt mqtt;
 Lcd lcd;
 
-void setup() {  
+void test(String message) {
+  Serial.print("Callback executed with message: ");
+  Serial.println(message);
+}
+
+void setup() {
   Serial.begin(9600);
   while(!Serial){}
   startup.printBootArt();
@@ -37,6 +42,7 @@ void setup() {
   // sensor.initialize();
 
   mqtt.begin();
+  mqtt.registerCallback("sensor", test);
 
   lcd.begin();
   lcd.setCo2Level(450.0);
@@ -49,8 +55,11 @@ void setup() {
 void loop() {
   #ifdef TRANSMITTER
   // The following loop code is for the transmitter
-  sensor.loop();
+  // sensor.loop();
   mqtt.loop();
+
+  mqtt.sendMessage("sensor", "gumo");
+  delay(1000);
   #endif
 
 

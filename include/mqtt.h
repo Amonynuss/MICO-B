@@ -9,28 +9,29 @@
 class Mqtt {
 
     private:
+        static Mqtt* instance;
+
         WiFiClient wifiClient;
         MqttClient mqttClient;
 
         const char* broker = MQTT_SERVER_IP;
         int port = MQTT_PORT;
-        const char* baseTopic  = MQTT_BASE_TOPIC;
-
-        const unsigned long interval = 1000;
-        unsigned long previousMillis = 0;
-
-        int count = 0;
+        String baseTopic  = MQTT_BASE_TOPIC;
 
         void connectWifi();
         void connectMqtt();
-        static void onMqttMessage(int messageSize);
+        static void handleMessage(int messageSize); 
+        void onMessage(int messageSize);
+
+        void (*callback)(String);
 
     public:
         Mqtt();
         void begin();
         void loop();
 
-        void sendMessage(const char* topic, const char* message);
+        void sendMessage(String topic, String message);
+        void registerCallback(String topic, void (*callback)(String));
 };
 
 #endif

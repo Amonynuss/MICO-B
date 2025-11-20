@@ -3,51 +3,45 @@
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 
+Mqtt *Mqtt::instance = nullptr;
+
 Mqtt::Mqtt() : mqttClient(wifiClient)
 {
+  instance = this;
 }
 
 void Mqtt::begin()
 {
-  if (!Serial) {
+  if (!Serial)
+  {
     Serial.begin(9600);
     long start = millis();
-    while (!Serial && (millis() - start < 3000)); 
+    while (!Serial && (millis() - start < 3000))
+      ;
   }
-  
+
   connectWifi();
   connectMqtt();
-
-  mqttClient.onMessage(onMqttMessage);
+  mqttClient.onMessage(handleMessage);
 }
 
 void Mqtt::loop()
 {
-  if (!mqttClient.connected()) {
-     connectMqtt();
+  if (!mqttClient.connected())
+  {
+    connectMqtt();
   }
-  if(WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED)
+  {
     connectWifi();
   }
 
   mqttClient.poll();
-
-  unsigned long currentMillis = millis();
-  
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
-
-    sendMessage("test", "hello");
-
-    Serial.println();
-
-    count++;
-  }
 }
 
-void Mqtt::sendMessage(const char *topic, const char *message)
+void Mqtt::sendMessage(String topic, String message)
 {
-  String fullTopic = String(baseTopic) + String(topic);
+  String fullTopic = baseTopic + topic;
 
   Serial.print("Sending message to topic: ");
   Serial.println(fullTopic);
@@ -59,12 +53,19 @@ void Mqtt::sendMessage(const char *topic, const char *message)
   mqttClient.endMessage();
 }
 
+void Mqtt::registerCallback(String topic, void (*callback)(String))
+{
+  this->callback = callback;
+  mqttClient.subscribe(baseTopic + topic);
+}
+
 void Mqtt::connectWifi()
 {
   Serial.print("Attempting to connect to WPA SSID: ");
   Serial.println(ssid);
 
-  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
+  while (WiFi.begin(ssid, pass) != WL_CONNECTED)
+  {
     Serial.print(".");
     delay(5000);
   }
@@ -77,15 +78,36 @@ void Mqtt::connectMqtt()
   Serial.print("Attempting to connect to the MQTT broker: ");
   Serial.println(broker);
 
-  if (!mqttClient.connect(broker, port)) {
-    Serial.print("MQTT connection failed! Error code = ");
-    Serial.println(mqttClient.connectError());
-  } else {
-    Serial.println("Connected to the MQTT broker!");
+  while (!mqttClient.connected())
+  {
+    Serial.println("Try MQTT connection ... ");
+    mqttClient.connect(broker, port);
   }
 }
 
-void Mqtt::onMqttMessage(int messageSize)
+void Mqtt::handleMessage(int messageSize)
 {
-  
+  if (instance)
+  {
+    instance->onMessage(messageSize);
+  }
+}
+
+void Mqtt::onMessage(int messageSize)
+{
+  Serial.print("Received message");
+  String topic = mqttClient.messageTopic();
+  Serial.print("Topic: ");
+  Serial.println(topic);
+  String message;
+  while (mqttClient.available())
+  {
+    char c = mqttClient.read();
+    message += c;
+  }
+  Serial.print("Message: ");
+  Serial.println(message);
+  Serial.println();
+
+  callback(message);
 }
