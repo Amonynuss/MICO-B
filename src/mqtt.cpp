@@ -54,9 +54,9 @@ void Mqtt::sendMessage(String topic, String message)
   mqttClient.endMessage();
 }
 
-void Mqtt::registerCallback(String topic, std::function<void(String)> callback)
+void Mqtt::registerCallback(String topic, void (*callback)(String))
 {
-  this->callback = std::move(callback);
+  this->callback = callback;
   mqttClient.subscribe(baseTopic + topic);
 }
 
@@ -82,6 +82,7 @@ void Mqtt::connectMqtt()
     Serial.println("Successfully connected to mqtt broker!");
     mqttClient.connect(broker, port);
   }
+  Serial.println("MQTT connected!");
 }
 
 void Mqtt::handleMessage(int messageSize)

@@ -4,7 +4,6 @@
 #include <mqtt.h>
 #include <lcd.h>
 #include "startup.h"
-#include <functional>
 
 #define TRANSMITTER
 
@@ -17,6 +16,15 @@ Lcd lcd;
 void test(String message) {
   Serial.print("Callback executed with message: ");
   Serial.println(message);
+}
+
+void jsonTest(String message) {
+  JsonDocument receivedData;
+  deserializeJson(receivedData, message);
+  lcd.setCo2Level((receivedData["co2"]));
+  lcd.setTemperature((receivedData["temperature"]));
+  lcd.setHumidity((receivedData["humidity"]));
+  lcd.setPressure((receivedData["pressure"]));
 }
 
 void setup() {
@@ -35,6 +43,7 @@ void setup() {
 
   #ifdef RECEIVER
   // The following setup code is for the receiver
+
   startup.printReceiverArt();
   // Register member function using std::bind (std::function accepted by Mqtt)
   mqtt.initialize();
@@ -44,14 +53,16 @@ void setup() {
   // ampel.initialize();
   // ampel.setBrightness(200);
   // ampel.setRed();
+  lcd.begin();
+  ampel.initialize();
+  ampel.setRed();
+
+  mqtt.begin();
+  mqtt.registerCallback("transmitter", jsonTest);
+
+  ampel.setOrange();
+
   #endif
-
-
-  lcd.setCo2Level(String(450.0));
-  lcd.setTemperature(String(22.5));
-  lcd.setHumidity(String(45.0));
-  lcd.setPressure(String(1013.25));
-  
 }
 
 void loop() {
@@ -61,11 +72,18 @@ void loop() {
   // The following loop code is for the transmitter
   sensor.loop();
   mqtt.sendMessage("transmitter", sensor.getDataAsJson());
+
+  sensor.loop();
+
+  mqtt.sendMessage("transmitter", String(sensor.getCO2Level()));
   delay(1000);
   #endif
 
 
   #ifdef RECEIVER
   // The following loop code is for the receiver
+
+  // mqtt.sendMessage("receiver", "Hello from Receiver");
+  // delay(1000);
   #endif
 }

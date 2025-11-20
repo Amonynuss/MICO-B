@@ -2,6 +2,7 @@
 
 void Ampel::initialize(){
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+  setBrightness(150);
 }
 
 void Ampel::setRed(){
@@ -26,6 +27,18 @@ AmpelColor Ampel::getColor(){
 void Ampel::setBrightness(byte newBrightness){
     this->brightness = newBrightness;
     FastLED.setBrightness(newBrightness);
+}
+
+void Ampel::setCo2Level(String level)
+{
+    float levelF = level.toFloat();
+    if(levelF < 800){
+        setGreen();
+    } else if(levelF >= 800 && levelF < 1200){
+        setOrange();
+    } else {
+        setRed();
+    }
 }
 
 byte Ampel::getBrightness(){

@@ -20,7 +20,8 @@ class Lcd {
         };
         uint8_t mode = STARTUP;
 
-        enum DataColours {
+        enum Colours {
+            BACKGROUND = ST77XX_BLACK,
             CO2 = ST77XX_CYAN,
             TEMP = ST77XX_YELLOW,
             HUMID = ST77XX_GREEN,

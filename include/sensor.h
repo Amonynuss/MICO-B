@@ -4,6 +4,7 @@
 #include <Adafruit_BMP280.h>
 #include <Arduino.h>
 #include "bsec.h"
+#include <ArduinoJson.h>
 
 
 class Sensor{

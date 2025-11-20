@@ -10,20 +10,21 @@ void Lcd::initialize(void)
     while (!Serial && (millis() - start < 3000)); 
   }
 
-  Serial.print(F("Initialize LCD..."));
+  Serial.println(F("Initialize LCD..."));
 
   tft.initR(INITR_144GREENTAB);
 
   Serial.println(F("LCD Initialized"));
 
-  tft.fillScreen(ST77XX_BLACK);
-  setHeadline("CO2", DataColours::CO2, 0);
-  setHeadline("Temperatur", DataColours::TEMP, 1);
-  setHeadline("Feuchtigkeit", DataColours::HUMID, 2);
-  setHeadline("Druck", DataColours::PRESS, 3);
- 
-  Serial.println("done");
-
+  tft.fillScreen(Colours::BACKGROUND);
+  setHeadline("CO2", Colours::CO2, 0);
+  setCo2Level("-");
+  setHeadline("Temperatur", Colours::TEMP, 1);
+  setTemperature("-");
+  setHeadline("Feuchtigkeit", Colours::HUMID, 2);
+  setHumidity("-");
+  setHeadline("Druck", Colours::PRESS, 3);  
+  setPressure("-");
 }
 
 void Lcd::setHeadline(const char *text, uint16_t color, int position)
@@ -36,28 +37,32 @@ void Lcd::setHeadline(const char *text, uint16_t color, int position)
 
 void Lcd::setData(String data, uint16_t color, int position)
 {
+  int yPos = 32 * position + 10;
+
+  tft.fillRect(0, yPos, tft.width(), 20, Colours::BACKGROUND); // fill the area with background colour to clear previous data
+
   tft.setTextSize(2);
-  tft.setCursor(0, 32 * position + 10);
+  tft.setCursor(0, yPos);
   tft.setTextColor(color);
   tft.print(data);
 }
 
 void Lcd::setCo2Level(String level)
 {
-  setData(level, DataColours::CO2, 0);
+  setData(level, Colours::CO2, 0);
 }
 
 void Lcd::setTemperature(String temperature)
 {
-  setData(temperature, DataColours::TEMP, 1);
+  setData(temperature, Colours::TEMP, 1);
 }
 
 void Lcd::setHumidity(String humidity)
 {
-  setData(humidity, DataColours::HUMID, 2);
+  setData(humidity, Colours::HUMID, 2);
 }
 
 void Lcd::setPressure(String pressure)
 {
-  setData(pressure, DataColours::PRESS, 3);
+  setData(pressure, Colours::PRESS, 3);
 }

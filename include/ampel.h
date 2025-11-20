@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#define LED_PIN     7       // Data pin connected to the strip
+#define LED_PIN     12      // Data pin connected to the strip
 #define NUM_LEDS    8       // Number of LEDs in the strip
 #define LED_TYPE    WS2812B // Type of LED chip
 #define COLOR_ORDER GRB     // Color order
@@ -28,6 +28,8 @@ class Ampel{
         void setOrange();
         void setGreen();
         void setBrightness(byte newBrightness);
+
+        void setCo2Level(String level);
 
         AmpelColor getColor();
         byte getBrightness();
