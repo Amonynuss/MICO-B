@@ -18,6 +18,6 @@ void setup() {
 }
 
 void loop() {
-  // sensor.loop();
+  sensor.loop();
   mqttSender.loop();
 }

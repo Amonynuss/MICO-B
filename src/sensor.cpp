@@ -3,45 +3,118 @@
 
 
 void Sensor::initialize(){
-    bmp.begin(0x76);
+    bsec_virtual_sensor_t sensorList[13] = {
+            BSEC_OUTPUT_IAQ,
+            BSEC_OUTPUT_STATIC_IAQ,
+            BSEC_OUTPUT_CO2_EQUIVALENT,
+            BSEC_OUTPUT_BREATH_VOC_EQUIVALENT,
+            BSEC_OUTPUT_RAW_TEMPERATURE,
+            BSEC_OUTPUT_RAW_PRESSURE,
+            BSEC_OUTPUT_RAW_HUMIDITY,
+            BSEC_OUTPUT_RAW_GAS,
+            BSEC_OUTPUT_STABILIZATION_STATUS,
+            BSEC_OUTPUT_RUN_IN_STATUS,
+            BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
+            BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
+            BSEC_OUTPUT_GAS_PERCENTAGE
+        };
+    
+
+    iaqSensor.begin(BME68X_I2C_ADDR_LOW, Wire);
+    this->checkIaqSensorStatus();
+    iaqSensor.updateSubscription(sensorList, 13, BSEC_SAMPLE_RATE_LP);
+    this->checkIaqSensorStatus();
 }
 
-void Sensor::loop()
-{
+void Sensor::loop(){
     if (millis() - previousMillis >= interval) {
         previousMillis = millis();
-        
-        printTemperature();
-        printPressure();
-        printAltitude();
-    }
-}
+        if (iaqSensor.run()) {
+            this->getCO2Level();
+            this->getHumidity();
+            this->getPressure();
+            this->getTemperatur();
+            this->getRawHumidity();
+            this->getRawTemperatur();
 
-void Sensor::setSeaLevelPressure(float newSeaLevelPressure){
-    this->seaLevelPressure = newSeaLevelPressure;
+            this->printCO2Level();
+            this->printHumidity();
+            this->printPressure();
+            this->printTemperature();
+            this->printRawHumidity();
+            this->printRawTemperature();
+        }
+    }
 }
 
 void Sensor::printTemperature(){
     Serial.println("Temperatur: " + String(this->getTemperatur()) + "°C");
 }
 
-void Sensor::printAltitude(){
-    Serial.println("Altitude: " + String(this->getAltitude()) + "m");
+void Sensor::printCO2Level(){
+    Serial.println("CO2 Level: "+ String(this->getCO2Level()));
 }
 
 void Sensor::printPressure(){
     Serial.println("Pressure: " + String(this->getPressure() / 100) + "hPa");
 }
 
-float Sensor::getTemperatur(){
-    return bmp.readTemperature();
+void Sensor::printHumidity(){
+    Serial.println("Humidity: " + String(this->getHumidity()) + "%");
 }
 
-float Sensor::getAltitude(){
-    return bmp.readAltitude(this->seaLevelPressure);
+void Sensor::printRawHumidity(){
+    Serial.println("Raw humidity: " + String(this->getRawHumidity()));
+}
+
+void Sensor::printRawTemperature(){
+    Serial.println("Raw temperature: " + String(this->getRawTemperatur()));
+}
+
+float Sensor::getTemperatur(){
+    return iaqSensor.temperature;
 }
 
 float Sensor::getPressure(){
-    return bmp.readPressure();
+    return iaqSensor.pressure;
+}
+
+float Sensor::getHumidity(){
+    return iaqSensor.humidity;
+}
+
+float Sensor::getCO2Level(){
+    return iaqSensor.co2Equivalent;
+}
+
+float Sensor::getRawHumidity(){
+    return iaqSensor.rawHumidity;
+}
+
+float Sensor::getRawTemperatur(){
+    return iaqSensor.rawTemperature;
+}
+
+void Sensor::checkIaqSensorStatus(){
+    String output;
+    if (iaqSensor.bsecStatus != BSEC_OK) {
+        if (iaqSensor.bsecStatus < BSEC_OK) {
+            output = "BSEC error code : " + String(iaqSensor.bsecStatus);
+            Serial.println(output);
+        } else {
+            output = "BSEC warning code : " + String(iaqSensor.bsecStatus);
+            Serial.println(output);
+        }
+    }
+
+    if (iaqSensor.bme68xStatus != BME68X_OK) {
+        if (iaqSensor.bme68xStatus < BME68X_OK) {
+            output = "BME68X error code : " + String(iaqSensor.bme68xStatus);
+            Serial.println(output);
+        } else {
+            output = "BME68X warning code : " + String(iaqSensor.bme68xStatus);
+            Serial.println(output);
+        }
+    }
 }
 

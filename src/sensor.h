@@ -3,28 +3,39 @@
 
 #include <Adafruit_BMP280.h>
 #include <Arduino.h>
+#include "bsec.h"
 
 
 class Sensor{
     private:
-        Adafruit_BMP280 bmp;
-        float seaLevelPressure = 1013.25;
+        Bsec iaqSensor;
 
         const unsigned long interval = 2000;
         unsigned long previousMillis = 0;
+
+        void checkIaqSensorStatus();
 
     public:
         void initialize();
         void loop();
 
-        void setSeaLevelPressure(float newSeaLevelPressure);
         void printTemperature();
-        void printAltitude();
+        void printHumidity();
         void printPressure();
+        void printCO2Level();
+        void printBreathVoc();
+
+        void printRawTemperature();
+        void printRawHumidity();
 
         float getTemperatur();
-        float getAltitude();
         float getPressure();
+        float getHumidity();
+        float getCO2Level();
+        float getBreathVoc();
+
+        float getRawTemperatur();
+        float getRawHumidity();
 };
 
 #endif
