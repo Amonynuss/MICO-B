@@ -1,18 +1,22 @@
 #include <Arduino.h>
+#include <ampel.h>
+#include <sensor.h>
 
-// put function declarations here:
-int myFunction(int, int);
+Ampel ampel;
+Sensor sensor;
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup() {  
+  Serial.begin(9600);
+  ampel.initialize();
+  ampel.setBrightness(200);
+  ampel.setRed();
+
+  sensor.initialize();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  sensor.printTemperature();
+  sensor.printPressure();
+  sensor.printAltitude();
+  delay(1000);
 }
