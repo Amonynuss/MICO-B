@@ -6,6 +6,17 @@ void Sensor::initialize(){
     bmp.begin(0x76);
 }
 
+void Sensor::loop()
+{
+    if (millis() - previousMillis >= interval) {
+        previousMillis = millis();
+        
+        printTemperature();
+        printPressure();
+        printAltitude();
+    }
+}
+
 void Sensor::setSeaLevelPressure(float newSeaLevelPressure){
     this->seaLevelPressure = newSeaLevelPressure;
 }

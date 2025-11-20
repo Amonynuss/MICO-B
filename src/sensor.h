@@ -10,8 +10,13 @@ class Sensor{
         Adafruit_BMP280 bmp;
         float seaLevelPressure = 1013.25;
 
+        const unsigned long interval = 2000;
+        unsigned long previousMillis = 0;
+
     public:
         void initialize();
+        void loop();
+
         void setSeaLevelPressure(float newSeaLevelPressure);
         void printTemperature();
         void printAltitude();

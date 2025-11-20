@@ -1,9 +1,11 @@
 #include <Arduino.h>
 #include <ampel.h>
 #include <sensor.h>
+#include <mqtt_sender.h>
 
 Ampel ampel;
 Sensor sensor;
+MqttSender mqttSender;
 
 void setup() {  
   Serial.begin(9600);
@@ -12,11 +14,10 @@ void setup() {
   ampel.setRed();
 
   sensor.initialize();
+  mqttSender.begin();
 }
 
 void loop() {
-  sensor.printTemperature();
-  sensor.printPressure();
-  sensor.printAltitude();
-  delay(1000);
+  // sensor.loop();
+  mqttSender.loop();
 }
