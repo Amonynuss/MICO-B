@@ -18,6 +18,18 @@ void setup() {
   while(!Serial){}
   startup.printBootArt();
 
+
+  #ifdef TRANSMITTER
+  // The following setup code is for the transmitter
+  startup.printTransmitterArt();
+  #endif
+
+
+  #ifdef RECEIVER
+  // The following setup code is for the receiver
+  startup.printReceiverArt();
+  #endif
+
   // ampel.initialize();
   // ampel.setBrightness(200);
   // ampel.setRed();
@@ -31,17 +43,18 @@ void setup() {
   lcd.setTemperature(22.5);
   lcd.setHumidity(45.0);
   lcd.setPressure(1013.25);
+  
 }
 
 void loop() {
   #ifdef TRANSMITTER
-  // The following code is for the transmitter
+  // The following loop code is for the transmitter
   sensor.loop();
   mqtt.loop();
   #endif
 
 
   #ifdef RECEIVER
-  // The following code is for the receiver
+  // The following loop code is for the receiver
   #endif
 }

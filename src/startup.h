@@ -4,5 +4,7 @@
 class Startup {
     public:
     void printBootArt();
+    void printReceiverArt();
+    void printTransmitterArt();
 };
 #endif
