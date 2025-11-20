@@ -10,7 +10,7 @@ Mqtt::Mqtt() : mqttClient(wifiClient)
   instance = this;
 }
 
-void Mqtt::begin()
+void Mqtt::initialize()
 {
   if (!Serial)
   {
@@ -23,6 +23,7 @@ void Mqtt::begin()
   connectWifi();
   connectMqtt();
   mqttClient.onMessage(handleMessage);
+  Serial.print("\n\n\n");
 }
 
 void Mqtt::loop()
@@ -61,26 +62,24 @@ void Mqtt::registerCallback(String topic, std::function<void(String)> callback)
 
 void Mqtt::connectWifi()
 {
-  Serial.print("Attempting to connect to WPA SSID: ");
-  Serial.println(ssid);
+  Serial.println("Connecting to the network...");
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED)
   {
-    Serial.print(".");
     delay(5000);
   }
 
-  Serial.println("\nConnected to the network!");
+  Serial.println("Successfully connected to the network!\n");
+  delay(500);
 }
 
 void Mqtt::connectMqtt()
 {
-  Serial.print("Attempting to connect to the MQTT broker: ");
-  Serial.println(broker);
+  Serial.println("Connecting to the mqtt broker...");
 
   while (!mqttClient.connected())
   {
-    Serial.println("Try MQTT connection ... ");
+    Serial.println("Successfully connected to mqtt broker!");
     mqttClient.connect(broker, port);
   }
 }

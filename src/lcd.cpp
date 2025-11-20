@@ -2,7 +2,7 @@
 
 Lcd::Lcd() : tft(TFT_CS, TFT_DC, TFT_RST) {}
 
-void Lcd::begin(void)
+void Lcd::initialize(void)
 {
   if (!Serial) {
     Serial.begin(9600);

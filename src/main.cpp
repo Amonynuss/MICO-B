@@ -6,7 +6,7 @@
 #include "startup.h"
 #include <functional>
 
-#define RECEIVER
+#define TRANSMITTER
 
 Startup startup;
 Ampel ampel;
@@ -23,12 +23,12 @@ void setup() {
   Serial.begin(9600);
   while(!Serial){}
   startup.printBootArt();
-  mqtt.begin();
 
   #ifdef TRANSMITTER
   // The following setup code is for the transmitter
   startup.printTransmitterArt();
   sensor.initialize();
+  mqtt.initialize();
   mqtt.registerCallback("receiver", test);
   #endif
 
@@ -37,18 +37,16 @@ void setup() {
   // The following setup code is for the receiver
   startup.printReceiverArt();
   // Register member function using std::bind (std::function accepted by Mqtt)
+  mqtt.initialize();
   mqtt.registerCallback("transmitter", std::bind(&Lcd::setCo2Level, &lcd, std::placeholders::_1));
 
-  lcd.begin();
+  lcd.initialize();
   // ampel.initialize();
   // ampel.setBrightness(200);
   // ampel.setRed();
   #endif
 
-  
 
-
-  lcd.begin();
   lcd.setCo2Level(String(450.0));
   lcd.setTemperature(String(22.5));
   lcd.setHumidity(String(45.0));
@@ -61,9 +59,8 @@ void loop() {
 
   #ifdef TRANSMITTER
   // The following loop code is for the transmitter
-  // sensor.loop();
-
-  mqtt.sendMessage("transmitter", String(sensor.getCO2Level()));
+  sensor.loop();
+  mqtt.sendMessage("transmitter", sensor.getDataAsJson());
   delay(1000);
   #endif
 

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "sensor.h"
+#include <ArduinoJson.h>
 
 
 void Sensor::initialize(){
@@ -30,17 +31,16 @@ void Sensor::loop(){
     if (millis() - previousMillis >= interval) {
         previousMillis = millis();
         if (iaqSensor.run()) {
-            this->getCO2Level();
-            this->getHumidity();
-            this->getPressure();
-            this->getTemperatur();
-            this->getRawHumidity();
-            this->getRawTemperatur();
+            // this->getCO2Level();
+            // this->getHumidity();
+            // this->getPressure();
+            // this->getTemperatur();
 
-            this->printCO2Level();
-            this->printHumidity();
-            this->printPressure();
-            this->printTemperature();
+            // this->printCO2Level();
+            // this->printHumidity();
+            // this->printPressure();
+            // this->printTemperature();
+            // this->printJson();
         }
     }
 }
@@ -61,14 +61,6 @@ void Sensor::printHumidity(){
     Serial.println("Humidity: " + String(this->getHumidity()) + "%");
 }
 
-void Sensor::printRawHumidity(){
-    Serial.println("Raw humidity: " + String(this->getRawHumidity()));
-}
-
-void Sensor::printRawTemperature(){
-    Serial.println("Raw temperature: " + String(this->getRawTemperatur()));
-}
-
 float Sensor::getTemperatur(){
     return iaqSensor.temperature;
 }
@@ -83,14 +75,6 @@ float Sensor::getHumidity(){
 
 float Sensor::getCO2Level(){
     return iaqSensor.co2Equivalent;
-}
-
-float Sensor::getRawHumidity(){
-    return iaqSensor.rawHumidity;
-}
-
-float Sensor::getRawTemperatur(){
-    return iaqSensor.rawTemperature;
 }
 
 void Sensor::checkIaqSensorStatus(){
@@ -116,3 +100,21 @@ void Sensor::checkIaqSensorStatus(){
     }
 }
 
+String Sensor::getDataAsJson(){
+    JsonDocument doc;
+    
+    doc["temperature"] = this->getTemperatur();
+    doc["humidity"] = this->getHumidity();
+    doc["pressure"] = this->getPressure();
+    doc["co2"] = this->getCO2Level();
+    
+    String jsonString;
+    serializeJson(doc, jsonString);
+    
+    // Return the String object
+    return jsonString;
+}
+
+void Sensor::printJson(){
+    Serial.println("JSON: " + this->getDataAsJson());
+}

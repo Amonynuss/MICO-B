@@ -28,7 +28,7 @@ class Mqtt {
 
     public:
         Mqtt();
-        void begin();
+        void initialize();
         void loop();
 
         void sendMessage(String topic, String message);

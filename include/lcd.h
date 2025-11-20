@@ -32,7 +32,7 @@ class Lcd {
 
     public:
         Lcd();
-        void begin();
+        void initialize();
 
         void setCo2Level(String level);
         void setTemperature(String temperature);
