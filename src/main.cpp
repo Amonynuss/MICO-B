@@ -13,18 +13,18 @@ Sensor sensor;
 Mqtt mqtt;
 Lcd lcd;
 
-void test(String message) {
-  Serial.print("Callback executed with message: ");
-  Serial.println(message);
-}
-
-void jsonTest(String message) {
+void processData(String message) {
   JsonDocument receivedData;
   deserializeJson(receivedData, message);
-  lcd.setCo2Level((receivedData["co2"]));
-  lcd.setTemperature((receivedData["temperature"]));
-  lcd.setHumidity((receivedData["humidity"]));
-  lcd.setPressure((receivedData["pressure"]));
+  String co2 = receivedData["co2"];
+  String temperature = receivedData["temperature"];
+  String humidity = receivedData["humidity"];
+  String pressure = receivedData["pressure"];
+  lcd.setCo2Level(co2);
+  lcd.setTemperature(temperature);
+  lcd.setHumidity(humidity);
+  lcd.setPressure(pressure);
+  ampel.setCo2Level(co2);
 }
 
 void setup() {
@@ -37,7 +37,6 @@ void setup() {
   startup.printTransmitterArt();
   sensor.initialize();
   mqtt.initialize();
-  mqtt.registerCallback("receiver", test);
   #endif
 
 
@@ -51,7 +50,7 @@ void setup() {
   ampel.setRed();
 
   mqtt.initialize();
-  mqtt.registerCallback("transmitter", jsonTest);
+  mqtt.registerCallback("transmitter", processData);
 
   ampel.setOrange();
 
