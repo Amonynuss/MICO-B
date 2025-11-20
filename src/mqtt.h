@@ -1,30 +1,35 @@
-#ifndef MQTTSENDER_H
-#define MQTTSENDER_H
+#ifndef MQTT_H
+#define MQTT_H
 
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
 #include "arduino_secrets.h"
 
-class MqttSender {
+class Mqtt {
 
     private:
         WiFiClient wifiClient;
         MqttClient mqttClient;
 
-        const char* broker = "test.mosquitto.org";
+        const char* broker = "192.168.37.4";
         int port = 1883;
-        const char* topic  = "arduino/simple";
+        const char* baseTopic  = "micob/ampel/";
 
         const unsigned long interval = 1000;
         unsigned long previousMillis = 0;
 
         int count = 0;
 
+        void connectWifi();
+        void connectMqtt();
+        static void onMqttMessage(int messageSize);
+
     public:
-        MqttSender();
+        Mqtt();
         void begin();
         void loop();
 
+        void sendMessage(const char* topic, const char* message);
 };
 
 #endif
