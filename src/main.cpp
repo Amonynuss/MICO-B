@@ -5,6 +5,8 @@
 #include <lcd.h>
 #include "startup.h"
 
+#define TRANSMITTER
+
 Startup startup;
 Ampel ampel;
 Sensor sensor;
@@ -35,7 +37,7 @@ void loop() {
   #ifdef TRANSMITTER
   // The following code is for the transmitter
   sensor.loop();
-  mqttSender.loop();
+  mqtt.loop();
   #endif
 
 
