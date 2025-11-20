@@ -14,7 +14,7 @@ void Lcd::initialize(void)
 
   tft.initR(INITR_144GREENTAB);
 
-  Serial.println(F("LCD Initialized"));
+  Serial.println(F("LCD Initialized!\n"));
 
   tft.fillScreen(Colours::BACKGROUND);
   setHeadline("CO2", Colours::CO2, 0);

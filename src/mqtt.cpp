@@ -79,10 +79,9 @@ void Mqtt::connectMqtt()
 
   while (!mqttClient.connected())
   {
-    Serial.println("Successfully connected to mqtt broker!");
     mqttClient.connect(broker, port);
   }
-  Serial.println("MQTT connected!");
+  Serial.println("Successfully connected to mqtt broker!");
 }
 
 void Mqtt::handleMessage(int messageSize)

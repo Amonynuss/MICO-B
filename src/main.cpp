@@ -5,7 +5,7 @@
 #include <lcd.h>
 #include "startup.h"
 
-#define TRANSMITTER
+#define RECEIVER
 
 Startup startup;
 Ampel ampel;
@@ -45,19 +45,12 @@ void setup() {
   // The following setup code is for the receiver
 
   startup.printReceiverArt();
-  // Register member function using std::bind (std::function accepted by Mqtt)
-  mqtt.initialize();
-  mqtt.registerCallback("transmitter", std::bind(&Lcd::setCo2Level, &lcd, std::placeholders::_1));
 
   lcd.initialize();
-  // ampel.initialize();
-  // ampel.setBrightness(200);
-  // ampel.setRed();
-  lcd.begin();
   ampel.initialize();
   ampel.setRed();
 
-  mqtt.begin();
+  mqtt.initialize();
   mqtt.registerCallback("transmitter", jsonTest);
 
   ampel.setOrange();
