@@ -17,6 +17,8 @@ private:
     WiFiClient wifiClient;
     MqttClient mqttClient;
 
+    unsigned long previousMillis = 0;
+
     const char *broker = MQTT_SERVER_IP;
     int port = MQTT_PORT;
     String baseTopic = MQTT_BASE_TOPIC;

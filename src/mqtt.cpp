@@ -22,16 +22,20 @@ void Mqtt::initialize()
 
 void Mqtt::loop()
 {
-  if (!mqttClient.connected())
+  if (millis() - previousMillis >= 1000)
   {
-    connectMqtt();
-  }
-  if (WiFi.status() != WL_CONNECTED)
-  {
-    connectWifi();
-  }
+    previousMillis = millis();
+    if (!mqttClient.connected())
+    {
+      connectMqtt();
+    }
+    if (WiFi.status() != WL_CONNECTED)
+    {
+      connectWifi();
+    }
 
-  mqttClient.poll();
+    mqttClient.poll();
+  }
 }
 
 void Mqtt::sendMessage(String topic, String message)

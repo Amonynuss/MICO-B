@@ -5,7 +5,7 @@
 #include <lcd.h>
 #include <startup.h>
 
-#define TRANSMITTER
+#define RECEIVER
 
 Startup startup;
 Ampel ampel;
@@ -65,6 +65,5 @@ void loop()
 // The following loop code is for the receiver
 
 // mqtt.sendMessage("receiver", "Hello from Receiver");
-// delay(1000);
 #endif
 }
