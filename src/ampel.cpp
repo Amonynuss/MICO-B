@@ -55,29 +55,22 @@ void Ampel::fadeColor(CHSV targetColor)
     int steps = 50;
     int delayTime = 20;
 
-    // Calculate the deltas (differences) for Saturation and Value (linear path)
     int satDelta = targetColor.s - currentColor.s;
     int valDelta = targetColor.v - currentColor.v;
 
-    // Calculate the Hue delta for the shortest path
     int hueDelta = targetColor.h - currentColor.h;
 
-    // The short path logic: if the distance is greater than half the circle (128),
-    // we take the path in the opposite direction.
-    // Hue range is 0-255.
     if (hueDelta > 127)
     {
-        hueDelta -= 256; // Forces a negative path (going backwards over the 0 boundary)
+        hueDelta -= 256;
     }
     else if (hueDelta < -128)
     {
-        hueDelta += 256; // Forces a positive path (going forwards over the 255 boundary)
+        hueDelta += 256;
     }
 
     for (int i = 0; i <= steps; i++)
     {
-        // Add the proportional distance to the start value.
-        // Casting the result to (byte) handles the circular overflow (e.g., 250 + 20 = 14) automatically and correctly.
         byte h = currentColor.h + (hueDelta * i / steps);
         byte s = currentColor.s + (satDelta * i / steps);
         byte v = currentColor.v + (valDelta * i / steps);
@@ -85,7 +78,5 @@ void Ampel::fadeColor(CHSV targetColor)
         FastLED.showColor(CHSV(h, s, v));
         delay(delayTime);
     }
-
-    // Ensure the final color is set exactly
     currentColor = targetColor;
 }
