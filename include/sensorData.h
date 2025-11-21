@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 
-struct SensorData{
+struct SensorData
+{
     String temperature;
     String humidity;
     String pressure;

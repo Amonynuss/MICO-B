@@ -13,25 +13,28 @@ Sensor sensor;
 Mqtt mqtt;
 Lcd lcd;
 
-void showData(SensorData data) {
+void showData(SensorData data)
+{
   lcd.showData(data);
   ampel.setCo2Level(data.co2);
 }
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  while(!Serial){}
+  while (!Serial)
+  {
+  }
   startup.printBootArt();
 
-  #ifdef TRANSMITTER
+#ifdef TRANSMITTER
   // The following setup code is for the transmitter
   startup.printTransmitterArt();
   sensor.initialize();
   mqtt.initialize();
-  #endif
+#endif
 
-
-  #ifdef RECEIVER
+#ifdef RECEIVER
   // The following setup code is for the receiver
 
   startup.printReceiverArt();
@@ -44,24 +47,24 @@ void setup() {
 
   ampel.setOrange();
 
-  #endif
+#endif
 }
 
-void loop() {
+void loop()
+{
   mqtt.loop();
 
-  #ifdef TRANSMITTER
+#ifdef TRANSMITTER
   // The following loop code is for the transmitter
   sensor.loop();
   mqtt.sendMessage("transmitter", sensor.getSensorData());
   delay(1000);
-  #endif
+#endif
 
+#ifdef RECEIVER
+// The following loop code is for the receiver
 
-  #ifdef RECEIVER
-  // The following loop code is for the receiver
-
-  // mqtt.sendMessage("receiver", "Hello from Receiver");
-  // delay(1000);
-  #endif
+// mqtt.sendMessage("receiver", "Hello from Receiver");
+// delay(1000);
+#endif
 }

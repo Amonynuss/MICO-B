@@ -6,41 +6,44 @@
 #include <SPI.h>
 #include <sensorData.h>
 
-#define TFT_CS      10 // Chip Select Pin
-#define TFT_RST     8 // Or set to -1 and connect to Arduino RESET pin
-#define TFT_DC      9 // RS Pin on the Board
+#define TFT_CS 10 // Chip Select Pin
+#define TFT_RST 8 // Or set to -1 and connect to Arduino RESET pin
+#define TFT_DC 9  // RS Pin on the Board
 
-class Lcd {
-    private:
-        Adafruit_ST7735 tft;
+class Lcd
+{
+private:
+    Adafruit_ST7735 tft;
 
-        enum Mode {
-            STARTUP,
-            CONNECT_MQTT,
-            DISPLAY_DATA
-        };
-        uint8_t mode = STARTUP;
+    enum Mode
+    {
+        STARTUP,
+        CONNECT_MQTT,
+        DISPLAY_DATA
+    };
+    uint8_t mode = STARTUP;
 
-        enum Colours {
-            BACKGROUND = ST77XX_BLACK,
-            CO2 = ST77XX_CYAN,
-            TEMP = ST77XX_YELLOW,
-            HUMID = ST77XX_GREEN,
-            PRESS= ST77XX_ORANGE
-        };
+    enum Colours
+    {
+        BACKGROUND = ST77XX_BLACK,
+        CO2 = ST77XX_CYAN,
+        TEMP = ST77XX_YELLOW,
+        HUMID = ST77XX_GREEN,
+        PRESS = ST77XX_ORANGE
+    };
 
-        void setHeadline(const char* text, uint16_t color, int position);
-        void setData(String data, String unit, uint16_t color, int position);
+    void setHeadline(const char *text, uint16_t color, int position);
+    void setData(String data, String unit, uint16_t color, int position);
 
-    public:
-        Lcd();
-        void initialize();
+public:
+    Lcd();
+    void initialize();
 
-        void setCo2Level(String level);
-        void setTemperature(String temperature);
-        void setHumidity(String humidity);
-        void setPressure(String pressure);
-        void showData(SensorData sensorData);
+    void setCo2Level(String level);
+    void setTemperature(String temperature);
+    void setHumidity(String humidity);
+    void setPressure(String pressure);
+    void showData(SensorData sensorData);
 };
 
 #endif

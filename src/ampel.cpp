@@ -61,13 +61,16 @@ void Ampel::fadeColor(CHSV targetColor)
 
     // Calculate the Hue delta for the shortest path
     int hueDelta = targetColor.h - currentColor.h;
-    
+
     // The short path logic: if the distance is greater than half the circle (128),
     // we take the path in the opposite direction.
     // Hue range is 0-255.
-    if (hueDelta > 127) {
+    if (hueDelta > 127)
+    {
         hueDelta -= 256; // Forces a negative path (going backwards over the 0 boundary)
-    } else if (hueDelta < -128) {
+    }
+    else if (hueDelta < -128)
+    {
         hueDelta += 256; // Forces a positive path (going forwards over the 255 boundary)
     }
 
@@ -82,7 +85,7 @@ void Ampel::fadeColor(CHSV targetColor)
         FastLED.showColor(CHSV(h, s, v));
         delay(delayTime);
     }
-    
+
     // Ensure the final color is set exactly
     currentColor = targetColor;
 }

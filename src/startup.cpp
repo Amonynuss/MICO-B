@@ -1,7 +1,7 @@
 #include "startup.h"
 #include <Arduino.h>
 
-const char* BOOT_ART = R"(
+const char *BOOT_ART = R"(
  ____     _____       ___
 /\  _`\  /\  __`\   /'___`\
 \ \ \/\_\\ \ \/\ \ /\_\ /\ \
@@ -22,7 +22,7 @@ const char* BOOT_ART = R"(
                           \/_/
 )";
 
-const char* RECIVER_ART = R"(
+const char *RECIVER_ART = R"(
  ____
 /\  _`\                         __
 \ \ \L\ \     __    ___     __ /\_\  __  __     __   _ __
@@ -32,7 +32,7 @@ const char* RECIVER_ART = R"(
     \/_/\/ /\/____/\/____/\/____/ \/_/\/__/   \/____/ \/_/
 )";
 
-const char* TRANSMITTER_ART = R"(
+const char *TRANSMITTER_ART = R"(
  ____                       __
 /\  _`\                    /\ \
 \ \,\L\_\     __    ___    \_\ \     __   _ __
@@ -42,15 +42,17 @@ const char* TRANSMITTER_ART = R"(
     \/_____/\/____/\/_/\/_/\/__,_ /\/____/ \/_/
 )";
 
-
-void Startup::printBootArt() {
+void Startup::printBootArt()
+{
     Serial.println(F(BOOT_ART));
 }
 
-void Startup::printReceiverArt() {
+void Startup::printReceiverArt()
+{
     Serial.println(F(RECIVER_ART));
 }
 
-void Startup::printTransmitterArt() {
+void Startup::printTransmitterArt()
+{
     Serial.println(F(TRANSMITTER_ART));
 }

@@ -7,33 +7,32 @@
 #include <ArduinoJson.h>
 #include <sensorData.h>
 
+class Sensor
+{
+private:
+    Bsec iaqSensor;
 
-class Sensor{
-    private:
-        Bsec iaqSensor;
+    const unsigned long interval = 2000;
+    unsigned long previousMillis = 0;
+    SensorData sensorData;
 
-        const unsigned long interval = 2000;
-        unsigned long previousMillis = 0;
-        SensorData sensorData;
-      
+    void checkIaqSensorStatus();
 
-        void checkIaqSensorStatus();
+public:
+    void initialize();
+    void loop();
 
-    public:
-        void initialize();
-        void loop();
+    void printTemperature();
+    void printHumidity();
+    void printPressure();
+    void printCO2Level();
 
-        void printTemperature();
-        void printHumidity();
-        void printPressure();
-        void printCO2Level();
+    float getTemperatur();
+    float getPressure();
+    float getHumidity();
+    float getCO2Level();
 
-        float getTemperatur();
-        float getPressure();
-        float getHumidity();
-        float getCO2Level();
-
-        SensorData getSensorData();
+    SensorData getSensorData();
 };
 
 #endif

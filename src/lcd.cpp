@@ -17,7 +17,7 @@ void Lcd::initialize(void)
   setTemperature("-");
   setHeadline("Feuchtigkeit", Colours::HUMID, 2);
   setHumidity("-");
-  setHeadline("Druck", Colours::PRESS, 3);  
+  setHeadline("Druck", Colours::PRESS, 3);
   setPressure("-");
 }
 
@@ -64,7 +64,8 @@ void Lcd::setPressure(String pressure)
   setData(pressure, "hPa", Colours::PRESS, 3);
 }
 
-void Lcd::showData(SensorData sensorData){
+void Lcd::showData(SensorData sensorData)
+{
   this->setCo2Level(sensorData.co2);
   this->setHumidity(sensorData.humidity);
   this->setTemperature(sensorData.temperature);
