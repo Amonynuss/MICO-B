@@ -41,7 +41,6 @@ void Sensor::loop(){
             // this->printHumidity();
             // this->printPressure();
             // this->printTemperature();
-            // this->printJson();
         }
     }
 }
@@ -99,24 +98,6 @@ void Sensor::checkIaqSensorStatus(){
             Serial.println(output);
         }
     }
-}
-
-String Sensor::getDataAsJson(){
-    JsonDocument doc;
-    
-    doc["temperature"] = this->getTemperatur();
-    doc["humidity"] = this->getHumidity();
-    doc["pressure"] = this->getPressure();
-    doc["co2"] = this->getCO2Level();
-    
-    String jsonString;
-    serializeJson(doc, jsonString);
-    
-    return jsonString;
-}
-
-void Sensor::printJson(){
-    Serial.println("JSON: " + this->getDataAsJson());
 }
 
 SensorData Sensor::getSensorData(){

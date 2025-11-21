@@ -5,7 +5,7 @@
 #include <lcd.h>
 #include <startup.h>
 
-#define RECEIVER
+#define TRANSMITTER
 
 Startup startup;
 Ampel ampel;

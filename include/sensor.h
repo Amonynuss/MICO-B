@@ -27,14 +27,12 @@ class Sensor{
         void printHumidity();
         void printPressure();
         void printCO2Level();
-        void printJson();
 
         float getTemperatur();
         float getPressure();
         float getHumidity();
         float getCO2Level();
 
-        String getDataAsJson();
         SensorData getSensorData();
 };
 

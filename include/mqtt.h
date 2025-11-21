@@ -23,19 +23,21 @@ class Mqtt {
 
         void connectWifi();
         void connectMqtt();
-        static void handleMessage(int messageSize); 
         void onMessage(int messageSize);
-
         void (*callback)(SensorData message);
+
+        static void handleMessage(int messageSize); 
+
 
     public:
         Mqtt();
+        
         void initialize();
         void loop();
-
         void sendMessage(String topic, String message);
         void sendMessage(String topic, SensorData sensorData);
         void registerCallback(String topic, void (*callback)(SensorData));
+
         String getJsonFromSensorData(SensorData sensorData);
         SensorData getSensorDataFromJson(String json);
 };
