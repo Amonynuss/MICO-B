@@ -30,7 +30,7 @@ class Lcd {
         };
 
         void setHeadline(const char* text, uint16_t color, int position);
-        void setData(String data, uint16_t color, int position);
+        void setData(String data, String unit, uint16_t color, int position);
 
     public:
         Lcd();

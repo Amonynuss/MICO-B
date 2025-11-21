@@ -15,6 +15,7 @@ Lcd lcd;
 
 void showData(SensorData data) {
   lcd.showData(data);
+  ampel.setCo2Level(data.co2);
 }
 
 void setup() {
@@ -37,7 +38,6 @@ void setup() {
 
   lcd.initialize();
   ampel.initialize();
-  ampel.setRed();
 
   mqtt.initialize();
   mqtt.registerCallback("transmitter", showData);

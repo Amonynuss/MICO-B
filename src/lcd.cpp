@@ -29,7 +29,7 @@ void Lcd::setHeadline(const char *text, uint16_t color, int position)
   tft.print(text);
 }
 
-void Lcd::setData(String data, uint16_t color, int position)
+void Lcd::setData(String data, String unit, uint16_t color, int position)
 {
   int yPos = 32 * position + 10;
 
@@ -39,26 +39,29 @@ void Lcd::setData(String data, uint16_t color, int position)
   tft.setCursor(0, yPos);
   tft.setTextColor(color);
   tft.print(data);
+  tft.setTextSize(1);
+  tft.print(" ");
+  tft.print(unit);
 }
 
 void Lcd::setCo2Level(String level)
 {
-  setData(level, Colours::CO2, 0);
+  setData(level, "ppM", Colours::CO2, 0);
 }
 
 void Lcd::setTemperature(String temperature)
 {
-  setData(temperature, Colours::TEMP, 1);
+  setData(temperature, "C", Colours::TEMP, 1);
 }
 
 void Lcd::setHumidity(String humidity)
 {
-  setData(humidity, Colours::HUMID, 2);
+  setData(humidity, "%", Colours::HUMID, 2);
 }
 
 void Lcd::setPressure(String pressure)
 {
-  setData(pressure, Colours::PRESS, 3);
+  setData(pressure, "hPa", Colours::PRESS, 3);
 }
 
 void Lcd::showData(SensorData sensorData){
