@@ -3,7 +3,7 @@
 #include <sensor.h>
 #include <mqtt.h>
 #include <lcd.h>
-#include "startup.h"
+#include <startup.h>
 
 #define RECEIVER
 
@@ -13,18 +13,8 @@ Sensor sensor;
 Mqtt mqtt;
 Lcd lcd;
 
-void processData(String message) {
-  JsonDocument receivedData;
-  deserializeJson(receivedData, message);
-  String co2 = receivedData["co2"];
-  String temperature = receivedData["temperature"];
-  String humidity = receivedData["humidity"];
-  String pressure = receivedData["pressure"];
-  lcd.setCo2Level(co2);
-  lcd.setTemperature(temperature);
-  lcd.setHumidity(humidity);
-  lcd.setPressure(pressure);
-  ampel.setCo2Level(co2);
+void showData(SensorData data) {
+  lcd.showData(data);
 }
 
 void setup() {
@@ -50,7 +40,7 @@ void setup() {
   ampel.setRed();
 
   mqtt.initialize();
-  mqtt.registerCallback("transmitter", processData);
+  mqtt.registerCallback("transmitter", showData);
 
   ampel.setOrange();
 
@@ -63,8 +53,7 @@ void loop() {
   #ifdef TRANSMITTER
   // The following loop code is for the transmitter
   sensor.loop();
-  mqtt.sendMessage("transmitter", sensor.getDataAsJson());
-  sensor.loop();
+  mqtt.sendMessage("transmitter", sensor.getSensorData());
   delay(1000);
   #endif
 

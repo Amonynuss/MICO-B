@@ -1,4 +1,7 @@
 #include "mqtt.h"
+#include <sensorData.h>
+#include <ArduinoJson.h>
+
 
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
@@ -46,7 +49,45 @@ void Mqtt::sendMessage(String topic, String message)
   mqttClient.endMessage();
 }
 
-void Mqtt::registerCallback(String topic, void (*callback)(String))
+void Mqtt::sendMessage(String topic, SensorData sensorData)
+{
+  String message = this->getJsonFromSensorData(sensorData);
+  this->sendMessage(topic,message);
+}
+
+String Mqtt::getJsonFromSensorData(SensorData sensorData){
+  JsonDocument doc;
+    
+    doc["temperature"] = sensorData.temperature;
+    doc["humidity"] = sensorData.humidity;
+    doc["pressure"] = sensorData.pressure;
+    doc["co2"] = sensorData.co2;
+    
+    String jsonString;
+    serializeJson(doc, jsonString);
+    
+    return jsonString;
+}
+
+SensorData Mqtt::getSensorDataFromJson(String json){
+
+  JsonDocument receivedData;
+  SensorData sensorData;
+  deserializeJson(receivedData, json);
+  String co2          = receivedData["co2"];
+  String temperature  = receivedData["temperature"];
+  String humidity     = receivedData["humidity"];
+  String pressure     = receivedData["pressure"];
+
+  sensorData.co2 = co2;
+  sensorData.temperature = temperature;
+  sensorData.humidity = humidity;
+  sensorData.pressure = pressure;
+
+  return sensorData;
+}
+
+void Mqtt::registerCallback(String topic, void (*callback)(SensorData))
 {
   this->callback = callback;
   mqttClient.subscribe(baseTopic + topic);
@@ -100,8 +141,10 @@ void Mqtt::onMessage(int messageSize)
   Serial.println(message);
   Serial.println();
 
+  SensorData data = this->getSensorDataFromJson(message);
+
   if (callback)
   {
-    callback(message);
+    callback(data);
   }
 }

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "sensor.h"
 #include <ArduinoJson.h>
+#include <sensorData.h>
 
 
 void Sensor::initialize(){
@@ -111,10 +112,18 @@ String Sensor::getDataAsJson(){
     String jsonString;
     serializeJson(doc, jsonString);
     
-    // Return the String object
     return jsonString;
 }
 
 void Sensor::printJson(){
     Serial.println("JSON: " + this->getDataAsJson());
+}
+
+SensorData Sensor::getSensorData(){
+    this->sensorData.temperature    = String(this->getTemperatur());
+    this->sensorData.humidity       = String(this->getHumidity());
+    this->sensorData.pressure       = String(this->getPressure());
+    this->sensorData.co2            = String(this ->getCO2Level());
+
+    return this->sensorData;
 }

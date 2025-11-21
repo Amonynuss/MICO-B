@@ -5,6 +5,9 @@
 #include <WiFiNINA.h>
 #include "credentials.h"
 #include "config.h"
+#include "sensorData.h"
+#include <ArduinoJson.h>
+
 
 class Mqtt {
 
@@ -23,7 +26,7 @@ class Mqtt {
         static void handleMessage(int messageSize); 
         void onMessage(int messageSize);
 
-        void (*callback)(String message);
+        void (*callback)(SensorData message);
 
     public:
         Mqtt();
@@ -31,7 +34,10 @@ class Mqtt {
         void loop();
 
         void sendMessage(String topic, String message);
-        void registerCallback(String topic, void (*callback)(String));
+        void sendMessage(String topic, SensorData sensorData);
+        void registerCallback(String topic, void (*callback)(SensorData));
+        String getJsonFromSensorData(SensorData sensorData);
+        SensorData getSensorDataFromJson(String json);
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
+#include <sensorData.h>
 
 #define TFT_CS      10 // Chip Select Pin
 #define TFT_RST     8 // Or set to -1 and connect to Arduino RESET pin
@@ -39,6 +40,7 @@ class Lcd {
         void setTemperature(String temperature);
         void setHumidity(String humidity);
         void setPressure(String pressure);
+        void showData(SensorData sensorData);
 };
 
 #endif

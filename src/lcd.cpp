@@ -60,3 +60,10 @@ void Lcd::setPressure(String pressure)
 {
   setData(pressure, Colours::PRESS, 3);
 }
+
+void Lcd::showData(SensorData sensorData){
+  this->setCo2Level(sensorData.co2);
+  this->setHumidity(sensorData.humidity);
+  this->setTemperature(sensorData.temperature);
+  this->setPressure(sensorData.pressure);
+}

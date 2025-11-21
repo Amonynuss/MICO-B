@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include "bsec.h"
 #include <ArduinoJson.h>
+#include <sensorData.h>
 
 
 class Sensor{
@@ -13,6 +14,8 @@ class Sensor{
 
         const unsigned long interval = 2000;
         unsigned long previousMillis = 0;
+        SensorData sensorData;
+      
 
         void checkIaqSensorStatus();
 
@@ -32,6 +35,7 @@ class Sensor{
         float getCO2Level();
 
         String getDataAsJson();
+        SensorData getSensorData();
 };
 
 #endif
