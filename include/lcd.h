@@ -32,6 +32,11 @@ private:
         PRESS = ST77XX_ORANGE
     };
 
+    String oldCo2Level = "";
+    String oldTemperature = "";
+    String oldHumidity = "";
+    String oldPressure = "";
+
     void setHeadline(const char *text, uint16_t color, int position);
     void setData(String data, String unit, uint16_t color, int position);
 

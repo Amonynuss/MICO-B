@@ -46,22 +46,38 @@ void Lcd::setData(String data, String unit, uint16_t color, int position)
 
 void Lcd::setCo2Level(String level)
 {
-  setData(level, "ppM", Colours::CO2, 0);
+  if(level != oldCo2Level)
+  {
+    setData(level, "ppM", Colours::CO2, 0);
+    oldCo2Level = level;
+  }
 }
 
 void Lcd::setTemperature(String temperature)
 {
-  setData(temperature, "C", Colours::TEMP, 1);
+  if(temperature != oldTemperature)
+  {
+    setData(temperature, "C", Colours::TEMP, 1);
+    oldTemperature = temperature;
+  }
 }
 
 void Lcd::setHumidity(String humidity)
 {
-  setData(humidity, "%", Colours::HUMID, 2);
+  if(humidity != oldHumidity)
+  {
+    setData(humidity, "%", Colours::HUMID, 2);
+    oldHumidity = humidity;
+  }
 }
 
 void Lcd::setPressure(String pressure)
 {
-  setData(pressure, "hPa", Colours::PRESS, 3);
+  if(pressure != oldPressure)
+  {
+    setData(pressure, "hPa", Colours::PRESS, 3);
+    oldPressure = pressure;
+  }
 }
 
 void Lcd::showData(SensorData sensorData)
