@@ -12,7 +12,7 @@ class Sensor
 private:
     Bsec iaqSensor;
 
-    const unsigned long interval = 2000;
+    const unsigned long interval = 1000;
     unsigned long previousMillis = 0;
     SensorData sensorData;
 
